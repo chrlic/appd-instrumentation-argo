@@ -62,3 +62,7 @@ argo:
 forward:
 	kubectl port-forward svc/argocd-server -n argocd 8080:443
 
+.PHONY: argo-app
+argo-app:
+	argocd app create echoapp --repo https://github.com/chrlic/appd-instrumentation-argo.git --path app --dest-server https://kubernetes.default.svc --dest-namespace app
+
