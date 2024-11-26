@@ -1,0 +1,14 @@
+apiVersion: ext.appd.com/v1alpha1
+kind: Instrumentation
+metadata:
+  name: java-instrumentation
+spec:
+  name: java-instrumentation
+  priority: 2
+  matchRules:
+    labels:
+    - appd/instr: java
+  injectionRules:
+    technology: java
+    image: appdynamics/java-agent:24.7.1
+    javaEnvVar: _JAVA_OPTIONS

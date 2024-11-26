@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: client
+  name: client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: client
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: client
+    spec:
+      containers:
+      - image: bash:latest
+        command:
+          - /usr/local/bin/bash
+          - "-c"
+          - "count=5000 ; for i in $(seq $count) ; do wget -O- -q http://echoapp:8282/api/hello ; echo \" ${i}\" ; sleep 1 ; done"
+        imagePullPolicy: Always
+        name: client
+    

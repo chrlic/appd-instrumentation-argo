@@ -1,0 +1,65 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echoapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: echoapp
+  template:
+    metadata:
+      labels:
+        appd/instr: java
+        app: echoapp
+    spec:
+      containers:
+      - name: echoapp
+        image: chrlic/echoapp:latest 
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8181
+          name: http
+        resources:
+          limits:
+            cpu: "1"
+            memory: 500Mi
+          requests:
+            cpu: 250m
+            memory: 100Mi
+        livenessProbe:
+          httpGet:
+            path: /echo
+            port: http
+          failureThreshold: 3
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /echo
+            port: http
+          failureThreshold: 1
+          periodSeconds: 10
+        startupProbe:
+          httpGet:
+            path: /echo
+            port: http
+          failureThreshold: 30
+          periodSeconds: 10
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: echoapp
+  labels:
+    run: echoapp
+spec:
+  ports:
+  - port: 8282
+    targetPort: 8181
+    protocol: TCP
+  selector:
+    app: echoapp
+  type: LoadBalancer

@@ -1,0 +1,15 @@
+apiVersion: ext.appd.com/v1alpha1
+kind: ClusterInstrumentation
+metadata:
+  name: java-instrumentation
+spec:
+  name: java-instrumentation
+  priority: 2
+  matchRules:
+    labels:
+    - appd/instr: java
+  injectionRules:
+    technology: java
+    # image: appdynamics/java-agent:24.8.1
+    image: appdynamics/java-agent:latest
+    javaEnvVar: _JAVA_OPTIONS
