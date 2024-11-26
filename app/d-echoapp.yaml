@@ -23,7 +23,7 @@ spec:
           name: http
         env:
         - name: TEST_ENV
-          value: test1
+          value: test2
         resources:
           limits:
             cpu: "1"
