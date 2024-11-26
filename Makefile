@@ -26,11 +26,11 @@ un-app:
 
 .PHONY: ns-instr
 ns-instr:
-	kubectl -napp apply -f app/crd-instrumentation.yaml
+	kubectl -napp apply -f instrumentation/crd-instrumentation.yaml
 
 .PHONY: un-ns-instr
 un-ns-instr:
-	kubectl -napp delete -f app/crd-instrumentation.yaml
+	kubectl -napp delete -f instrumentation/crd-instrumentation.yaml
 
 
 .PHONY: update-app

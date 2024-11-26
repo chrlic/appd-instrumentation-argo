@@ -1,0 +1,70 @@
+serviceaccount: webhook-instrumentor
+deploymentName: webhook-server
+webhookName: webhook-appd
+# namespacesEnabled is optional list of namespaces, where webhook would be applied. 
+# If missing, all namespaces will be enabled, except kubernetes system namespaces
+# namespacesEnabled:
+# - ns1
+# - ns2
+#
+# namespacesDisabled is optional list of namespaces, where webhook would not be applied. 
+# If missing, all namespaces will be enabled, except kubernetes system namespaces 
+# (and namespace where the webook itself is running)
+# namespacesDisabled:
+# - ns3
+#
+# enabledForPodsWithLabels is optional safety belt to try to instrument only pods
+# having set labels to a specific values
+# enabledForPodsWithLabels:
+# - appdInstr
+#
+# number of replicas for webhook server
+replicas: 1
+certValidityDays: 1024
+# failure policy can be Fail or Ignore. 
+# Ignore is safer - should the webhook fail or be unresponsive for timeoutSeconds, pod gets created unchanged
+timeoutSeconds: 2
+failurePolicy: Ignore
+debug: false
+
+# optional - certs information. If missing, certs will be generated dynamically, but that does 
+# not work with helm upgrade (except on OpenShift with service CA usage)
+# certs:
+#   tlsCert:
+#   tlsKey:
+#   caCert:
+
+# optional - useServiceCAonOCP: true - if set, on OpenShift, Service CA certificates will be used
+useServiceCAonOCP: true
+
+# service type and port for webhook server
+service:
+  type: ClusterIP
+  port: 443
+
+# image for pods running the webhook functionality
+image:
+  image: docker.io/chrlic/appd-webhook-instrumentor-ng:2.0.0
+  pullPolicy: Always
+
+# enables exceptions from instrumentation rules via namespaced CRD
+useCrdConfig: false
+
+# enables tracing of the webhook by OpenTelemetry
+# otelTracing:
+#   endpoint: otel-collector.default.svc.cluster.local:4317
+#   serviceName: mwh
+#   samplesPerMillion: "1000000"
+#   logPayload: true
+
+# optional AppDynamics controller access information - required if 
+# AppDynamics native/hybrid agents are used
+appdController:
+  host: <APPDYNAMICS_CONTROLLER_HOST>
+  port: "<APPDYNAMICS_CONTROLLER_PORT>"
+  isSecure: true
+  accountName: <APPDYNAMICS_CONTROLLER_ACCOUNT_NAME>
+  accessKey: "<APPDYNAMICS_CONTROLLER_ACCESS_KEY>"
+  # useProxy: true
+  # proxyHost: proxy.corp.com
+  # proxyPort: "8080"
