@@ -21,6 +21,9 @@ spec:
         ports:
         - containerPort: 8181
           name: http
+        env:
+        - name: TEST_ENV
+          value: test1
         resources:
           limits:
             cpu: "1"
