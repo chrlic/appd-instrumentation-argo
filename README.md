@@ -97,5 +97,7 @@ Verify the deployment and app update status and that the instrumentation change 
 ## Additional information and examples
 
 https://chrlic.github.io/appd-mwh-blog/
+
 https://chrlic.github.io/appd-mwh-otel-blog/
+
 https://chrlic.github.io/appd-mhw-otel-blog-2/
