@@ -14,6 +14,8 @@ Update the Help repos:
 helm repo update
 ~~~
 
+More info at https://developer.cisco.com/codeexchange/github/repo/cisco-open/appdynamics-k8s-webhook-instrumentor/
+
 ### Prepare values.yaml for Helm chart
 
 In the `helm` directory, copy file `values-template.yaml` to `values.yaml`.
@@ -91,3 +93,9 @@ kubectl -napp rollout restart deployment/echoapp
 ~~~
 
 Verify the deployment and app update status and that the instrumentation change was reflected
+
+## Additional information and examples
+
+https://chrlic.github.io/appd-mwh-blog/
+https://chrlic.github.io/appd-mwh-otel-blog/
+https://chrlic.github.io/appd-mhw-otel-blog-2/

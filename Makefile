@@ -1,12 +1,13 @@
-
+NAMESPACE_WEBHOOK=mwh
+NAMESPACE_APPLICATION=app
 
 .PHONY: helm
 helm:
-	helm --namespace=mwh install mwh mwh/webhook-instrumentor --values=helm/values.yaml
+	helm --namespace=$(NAMESPACE_WEBHOOK) install mwh mwh/webhook-instrumentor --values=helm/values.yaml
 
 .PHONY: un-helm
 un-helm:
-	helm --namespace=mwh delete mwh
+	helm --namespace=$(NAMESPACE_WEBHOOK) delete mwh
 
 .PHONY: instr
 instr:
@@ -18,36 +19,36 @@ un-instr:
 
 .PHONY: app
 app:
-	kubectl -napp apply -f app/d-echoapp.yaml
+	kubectl -n$(NAMESPACE_APPLICATION) apply -f app/d-echoapp.yaml
 
 .PHONY: un-app
 un-app:
-	kubectl -napp delete -f app/d-echoapp.yaml
+	kubectl -n$(NAMESPACE_APPLICATION) delete -f app/d-echoapp.yaml
 
 .PHONY: ns-instr
 ns-instr:
-	kubectl -napp apply -f instrumentation/crd-instrumentation.yaml
+	kubectl -n$(NAMESPACE_APPLICATION) apply -f instrumentation/crd-instrumentation.yaml
 
 .PHONY: un-ns-instr
 un-ns-instr:
-	kubectl -napp delete -f instrumentation/crd-instrumentation.yaml
+	kubectl -n$(NAMESPACE_APPLICATION) delete -f instrumentation/crd-instrumentation.yaml
 
 
 .PHONY: update-app
 update-app:
-	kubectl -napp rollout restart deployment/echoapp
+	kubectl -n$(NAMESPACE_APPLICATION) rollout restart deployment/echoapp
 
 .PHONY: forward
 forward:
-	kubectl -napp port-forward service/echoapp 8282:8282
+	kubectl -n$(NAMESPACE_APPLICATION) port-forward service/echoapp 8282:8282
 
 .PHONY: client
 client:
-	kubectl -napp apply -f client/d-client.yaml
+	kubectl -n$(NAMESPACE_APPLICATION) apply -f client/d-client.yaml
 
 .PHONY: un-client
 un-client:
-	kubectl -napp delete -f client/d-client.yaml
+	kubectl -n$(NAMESPACE_APPLICATION) delete -f client/d-client.yaml
 
 .PHONY: argo
 argo:
@@ -64,5 +65,5 @@ argo-forward:
 
 .PHONY: argo-app
 argo-app:
-	argocd app create echoapp --repo https://github.com/chrlic/appd-instrumentation-argo.git --path app --dest-server https://kubernetes.default.svc --dest-namespace app
+	argocd app create echoapp --repo https://github.com/chrlic/appd-instrumentation-argo.git --path app --dest-server https://kubernetes.default.svc --dest-namespace $(NAMESPACE_APPLICATION)
 
