@@ -59,6 +59,10 @@ argo:
 	kubectl delete -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 	kubectl delete namespace argocd
 
+.PHONY: argo-login
+argo-login:
+	argocd login localhost:8080
+
 .PHONY: argo-forward
 argo-forward:
 	kubectl port-forward svc/argocd-server -n argocd 8080:443
